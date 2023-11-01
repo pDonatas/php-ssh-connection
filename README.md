@@ -9,7 +9,7 @@ The PHP SSH Connection package provides an elegant syntax to connect to SSH serv
 You can install the PHP SSH Connection package by running the following Composer command.
 
 ```bash
-composer require pDonatas/php-ssh-connection
+composer require pdonatas/php-ssh-connection
 ```
 
 ## Usage
