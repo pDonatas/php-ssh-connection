@@ -1,7 +1,6 @@
 # PHP SSH Connection
 
-[![Build Status](https://travis-ci.com/DivineOmega/php-ssh-connection.svg?branch=master)](https://travis-ci.com/DivineOmega/php-ssh-connection)
-[![Coverage Status](https://coveralls.io/repos/github/DivineOmega/php-ssh-connection/badge.svg?branch=master)](https://coveralls.io/github/DivineOmega/php-ssh-connection?branch=master)
+As old repo (https://github.com/DivineOmega/php-ssh-connection) is abandoned I'll continue the support on this fork.
 
 The PHP SSH Connection package provides an elegant syntax to connect to SSH servers and execute commands. It supports both password and public-private keypair authentication, and can easily capture command output and errors.
 
@@ -10,7 +9,7 @@ The PHP SSH Connection package provides an elegant syntax to connect to SSH serv
 You can install the PHP SSH Connection package by running the following Composer command.
 
 ```bash
-composer require divineomega/php-ssh-connection
+composer require pDonatas/php-ssh-connection
 ```
 
 ## Usage
@@ -24,6 +23,7 @@ $connection = (new SSHConnection())
             ->as('demo')
             ->withPassword('password')
          // ->withPrivateKey($privateKeyPath)
+         // ->withPrivateKeyString($privateKeyString)
          // ->timeout(0)
             ->connect();
 

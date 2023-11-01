@@ -13,42 +13,55 @@ class SSHConnection
     const FINGERPRINT_MD5 = 'md5';
     const FINGERPRINT_SHA1 = 'sha1';
 
-    private $hostname;
-    private $port = 22;
-    private $username;
-    private $password;
-    private $privateKeyPath;
-    private $timeout;
-    private $connected = false;
-    private $ssh;
+    private ?string $hostname = null;
+    private int $port = 22;
+    private ?string $username = null;
+    private ?string $password = null;
+    private ?string $privateKeyPath = null;
+    private ?string $privateKeyContents = null;
+    private ?int $timeout = null;
+    private bool $connected = false;
+    private ?SSH2 $ssh = null;
 
     public function to(string $hostname): self
     {
         $this->hostname = $hostname;
+
         return $this;
     }
 
     public function onPort(int $port): self
     {
         $this->port = $port;
+
         return $this;
     }
 
     public function as(string $username): self
     {
         $this->username = $username;
+
         return $this;
     }
 
     public function withPassword(string $password): self
     {
         $this->password = $password;
+
         return $this;
     }
 
     public function withPrivateKey(string $privateKeyPath): self
     {
         $this->privateKeyPath = $privateKeyPath;
+
+        return $this;
+    }
+
+    public function withPrivateKeyString(string $privateKeyContents): self
+    {
+        $this->privateKeyContents = $privateKeyContents;
+
         return $this;
     }
 
@@ -58,7 +71,7 @@ class SSHConnection
         return $this;
     }
 
-    private function sanityCheck()
+    private function sanityCheck(): void
     {
         if (!$this->hostname) {
             throw new InvalidArgumentException('Hostname not specified.');
@@ -68,8 +81,8 @@ class SSHConnection
             throw new InvalidArgumentException('Username not specified.');
         }
 
-        if (!$this->password && (!$this->privateKeyPath)) {
-            throw new InvalidArgumentException('No password or private key path specified.');
+        if (!$this->password && !$this->privateKeyPath && !$this->privateKeyContents) {
+            throw new InvalidArgumentException('No password or private key specified.');
         }
     }
 
@@ -83,9 +96,13 @@ class SSHConnection
             throw new RuntimeException('Error connecting to server.');
         }
 
-        if ($this->privateKeyPath) {
+        if ($this->privateKeyPath || $this->privateKeyContents) {
             $key = new RSA();
-            $key->loadKey(file_get_contents($this->privateKeyPath));
+            if ($this->privateKeyPath) {
+                $key->loadKey(file_get_contents($this->privateKeyPath));
+            } else if ($this->privateKeyContents) {
+                $key->loadKey($this->privateKeyContents);
+            }
             $authenticated = $this->ssh->login($this->username, $key);
             if (!$authenticated) {
                 throw new RuntimeException('Error authenticating with public-private key pair.');

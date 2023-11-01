@@ -1,5 +1,5 @@
 {
-    "name": "divineomega/php-ssh-connection",
+    "name": "pdonatas/php-ssh-connection",
     "description": "Provides an elegant syntax to connect to SSH servers and execute commands.",
     "type": "library",
     "license": "LGPL-3.0-only",
@@ -7,14 +7,18 @@
         {
             "name": "Jordan Hall",
             "email": "jordan@hall05.co.uk"
+        },
+        {
+            "name": "Donatas Petrikauskas",
+            "email": "donatas.petrikauskas@gmail.com"
         }
     ],
     "require": {
-        "php": ">=7.1",
+        "php": "^8.0",
         "phpseclib/phpseclib": "^2.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^7.0||^8.0",
+        "phpunit/phpunit": "*",
         "php-coveralls/php-coveralls": "^2.0"
     },
     "autoload": {
